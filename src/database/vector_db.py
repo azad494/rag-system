@@ -41,22 +41,21 @@ def init_vector_collection(force_recreate: bool = False) -> None:
 def search(query_embedding: List[float], limit: int = 5) -> List[Any]:
     """
     Executes a high-performance semantic vector similarity search.
-    Casts search outputs explicitly to satisfy the Pylance index checker.
+    Uses query_points() to align with modern qdrant-client API requirements.
     """
     try:
-        client_any: Any = qdrant_client
-        search_results: List[Any] = list(
-            client_any.search(
-                collection_name=COLLECTION_NAME,
-                query_vector=query_embedding,
-                limit=limit
-            )
+        # Call query_points to support modern unified engine paths
+        response = qdrant_client.query_points(
+            collection_name=COLLECTION_NAME,
+            query=query_embedding,
+            limit=limit
         )
-        return search_results
+        # Extract points explicitly from the QueryResponse structure
+        return response.points
     except Exception as e:
         print(f"❌ Error executing vector search: {str(e)}")
         return []
 
 if __name__ == "__main__":
-    # Standalone script call defaults to forcing an instant environment configuration purge
-    init_vector_collection(force_recreate=True)
+    # Standalone script call defaults to checking environment layout configuration status
+    init_vector_collection(force_recreate=False)
