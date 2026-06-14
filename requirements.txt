@@ -4,3 +4,6 @@ pypdf
 pdfplumber 
 beautifulsoup4 
 langchain-text-splitters 
+qdrant-client
+sentence-transformers
+torch
