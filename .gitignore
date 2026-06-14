@@ -1,0 +1,106 @@
+# ==========================================
+# 🐍 Python Core Caches & System Artifacts
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ==========================================
+# 📦 Virtual Environments (Sandbox Layer)
+# ==========================================
+venv/
+vavenv/
+.venv/
+env/
+.env_workspace/
+ENV/
+env.bak/
+venv.bak/
+
+# ==========================================
+# 🔑 Security, Credentials & Environment Vaults
+# ==========================================
+.env
+.env.*
+!.env.example
+secrets.json
+*.pem
+*.key
+id_rsa
+config/jwt_secret.txt
+
+# ==========================================
+# 📊 Datasets & Big Data Infrastructure (CRITICAL)
+# ==========================================
+# Prevents giant Kaggle CSVs, raw files, or test data from bloating your Git history
+data/raw/*
+data/processed/*
+data/interim/*
+*.csv
+*.pdf
+*.html
+*.htm
+*.zip
+*.tar.gz
+*.tgz
+
+# Exception: Allow the directory structure tracking files if they exist
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+
+# ==========================================
+# 🗄️ Database & Container Storage Bindings
+# ==========================================
+# Ignores persistent data folders created by your running Docker containers
+.postgres_data/
+.qdrant_storage/
+.chroma/
+.redis_cache/
+*.db
+*.sqlite3
+
+# ==========================================
+# 💻 IDE Editor Configurations (VS Code / JetBrains)
+# ==========================================
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+*.swo
+
+# ==========================================
+# 🪵 Logs and Diagnostics
+# ==========================================
+*.log
+logs/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/

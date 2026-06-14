@@ -1,0 +1,6 @@
+psycopg2-binary 
+SQLAlchemy  
+pypdf 
+pdfplumber 
+beautifulsoup4 
+langchain-text-splitters 
