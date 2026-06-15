@@ -1,6 +1,4 @@
-Here is the entire, fully corrected `README.md` containing the validated Mermaid diagram syntax with proper line spacing. Open your file, clear out everything, and paste this single copyable block inside it:
 
-```markdown
 # 🧬 Clinical Intelligence Workspace: Isolated Multi-Stage RAG Platform
 
 An enterprise-grade, fully air-gapped **Clinical Decision Support RAG System** built to handle unstructured medical data, long-form reference literature, and complex relational records. This architecture implements a strict zero-hallucination verification pipeline alongside an instant metadata routing system to bypass standard vector search limitations.
@@ -11,51 +9,34 @@ An enterprise-grade, fully air-gapped **Clinical Decision Support RAG System** b
 
 ```mermaid
 graph TD
-    %% Styling Configuration
-    classDef ingest fill:#1f77b4,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef db fill:#ff7f0e,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef route fill:#2ca02c,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef core fill:#9467bd,stroke:#fff,stroke-width:2px,color:#fff;
-    classDef ui fill:#d62728,stroke:#fff,stroke-width:2px,color:#fff;
 
-    %% Data Sourcing Section
-    subgraph Phase 1: Ingestion & In-Memory Persistence
-        A[Unstructured Data:<br>mtsamples.csv / Wiki Scrapes] --> B(SQLAlchemy ORM Data Mapper)
-        B --> C[(PostgreSQL DB Instance<br>Metadata Registry Store)]
-    end
-    class A,B ingest;
-    class C db;
+    Phase1_A[Unstructured Data:<br>mtsamples.csv / Wiki Scrapes] --> Phase1_B(SQLAlchemy ORM Data Mapper)
 
-    %% Vector Sync Section
-    C -->|Batch Pipeline Processing| D(Local Text Embedding Generation<br>sentence-transformers/all-MiniLM-L6-v2)
-    D --> E[(Qdrant Vector Cluster Store<br>Collection: patient_clinical_notes)]
-    class D ingest;
-    class E db;
+    Phase1_B --> Phase1_C[(PostgreSQL DB Instance<br>Metadata Store)]
 
-    %% Orchestration Subsystem Section
-    subgraph Phase 3 & 4: Multi-Stage Intent-Routed Retrieval
-        F[Incoming User Input Query] --> G{Look-Ahead Regex<br>Intent Router Gate}
-        
-        %% Aggregation Path
-        G -->|Counting Intent:<br>'how many...'| H[PostgreSQL Metadata<br>Relational Calculation Scan]
-        
-        %% Semantic Path
-        G -->|Semantic Intent:<br>'what is...'| I[Stage 1: Qdrant Vector Space<br>Candidate Extraction Pool K=100]
-        I --> J[Stage 2: Cross-Encoder Matrix Reranker<br>cross-encoder/ms-marco-MiniLM-L6-v2]
-        J -->|Relaxed Threshold Gate >= -4.5| K[Noise-Filtered Grounded Chunks]
-    end
-    class F,G,H,I,J,K route;
+    Phase1_C --> Sync_D(Local Text Embedding Generation<br>sentence-transformers/all-MiniLM-L6-v2)
 
-    %% Generative Subsystem Section
-    subgraph Phase 5: Generative Synthesis & Visual Interfaces
-        H --> L[Context Payload Buffer Assembly]
-        K --> L
-        L --> M[Offline Air-Gapped LLM Inference<br>Ollama: llama3.2:1b]
-        M -->|Sub-Second Token Streaming<br>text/event-stream| N[Asynchronous FastAPI REST Engine<br>Port :8000]
-        N -->|Reactive State Redraw Loop| O[Custom Streamlit Frontend UI Dashboard<br>Port :8501]
-    end
-    class L,M,N core;
-    class O ui;
+    Sync_D --> Sync_E[(Qdrant Vector Store<br>Collection: patient_clinical_notes)]
+
+    Orch_F[Incoming User Input Query] --> Orch_G{Look-Ahead Regex<br>Intent Router Gate}
+
+    Orch_G -->|Counting Intent| Orch_H[PostgreSQL Metadata<br>Relational Calculation Scan]
+
+    Orch_G -->|Semantic Intent| Orch_I[Stage 1: Qdrant Vector Space<br>Candidate Extraction Pool K=100]
+
+    Orch_I --> Orch_J[Stage 2: Cross-Encoder Matrix Reranker<br>ms-marco-MiniLM-L6-v2]
+
+    Orch_J -->|Relaxed Threshold Gate >= -4.5| Orch_K[Noise-Filtered Grounded Chunks]
+
+    Orch_H --> Gen_L[Context Payload Buffer Assembly]
+
+    Orch_K --> Gen_L
+
+    Gen_L --> Gen_M[Offline Air-Gapped LLM Inference<br>Ollama: llama3.2:1b]
+
+    Gen_M --> Gen_N[Asynchronous FastAPI REST Engine<br>Port :8000]
+
+    Gen_N --> Gen_O[Custom Streamlit Frontend UI Dashboard<br>Port :8501]
 
 ```
 
@@ -166,32 +147,5 @@ streamlit run src/api/app.py
 
 ---
 
-## 📂 Repository File Blueprint
-
-```text
-rag-system/
-├── data/
-│   └── raw/                       # Storage folder for source documents
-├── src/
-│   ├── api/
-│   │   ├── __init__.py            # Clean initialized module path (Blank)
-│   │   ├── app.py                 # Streamlit UI Custom Dashboard Skin
-│   │   └── main.py                # Asynchronous FastAPI Gateway Port
-│   ├── database/
-│   │   ├── postgres.py            # Relational database models and connection keys
-│   │   └── vector_db.py           # Qdrant client connection initialization rules
-│   ├── generation/
-│   │   └── llm_client.py          # Ollama model stream token wrapper
-│   └── retrieval/
-│       ├── main_vectorize.py      # Database chunk extractor and vector generation script
-│       ├── orchestrator.py        # Master Hybrid-Routing Engine Core
-│       ├── reranker.py            # Local Cross-Encoder Attention Array Gate
-│       └── search_engine.py       # Qdrant space similarity search queries
-├── requirements.txt               # Locked project dependencies manifests
-└── README.md                      # Architecture blueprint documentation
-
-```
-
-```
 
 ```
